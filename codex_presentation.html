@@ -5,15 +5,34 @@
     <title>CodeXの機能紹介</title>
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
-        section { 
-            width: 100vw; 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+        section {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-direction: column;
         }
-        .slide { page-break-after: always; }
+        .slide {
+            page-break-after: always;
+            display: none;
+        }
+        .slide.active {
+            display: flex;
+        }
+        .nav-button {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        #prev { left: 1rem; }
+        #next { right: 1rem; }
     </style>
 </head>
 <body>
@@ -53,5 +72,30 @@
         <h2>まとめ</h2>
         <p>Codexはコード生成と理解を支援する強力なAIツールです。</p>
     </section>
+
+    <button id="prev" class="nav-button">&larr;</button>
+    <button id="next" class="nav-button">&rarr;</button>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        function showSlide(index) {
+            slides[current].classList.remove('active');
+            current = (index + slides.length) % slides.length;
+            slides[current].classList.add('active');
+        }
+        document.getElementById('next').addEventListener('click', () => {
+            showSlide(current + 1);
+        });
+        document.getElementById('prev').addEventListener('click', () => {
+            showSlide(current - 1);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') showSlide(current + 1);
+            if (e.key === 'ArrowLeft') showSlide(current - 1);
+        });
+        // 初期表示
+        slides[current].classList.add('active');
+    </script>
 </body>
 </html>
